@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {"name":"Python Debugger: FastAPI","type":"debugpy","request":"launch","module":"uvicorn","args":["main:app","--reload"],"jinja":true},
+
+
+        {
+            "name": "Poetry : FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:\\Users\\seb\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\tiresias-8trnMqZU-py3.14\\Scripts\\python.exe",
+            "module": "main",
+            "args": [],
+            "jinja": true,
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true
+        }
+    ]
+}

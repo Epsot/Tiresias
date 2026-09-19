@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiresias chat</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main>
+    <h1>Tiresias chat</h1>
+    <p class="meta">
+      Talks to Ollama at <span id="ollama-host">http://127.0.0.1:11434</span>.
+      JSON API: <code>POST /chat</code>.
+      Swagger: <a href="/docs">/docs</a>.
+    </p>
+
+    <form id="chat-form">
+      <label for="model">Model</label>
+      <input id="model" name="model" value="llama3.2:3b">
+
+      <label for="system-prompt">System prompt (from config.yml)</label>
+      <textarea id="system-prompt" readonly placeholder="Loaded from config.yml"></textarea>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required placeholder="Type a prompt..."></textarea>
+
+      <button type="submit" id="send">Send</button>
+    </form>
+
+    <h2>Answer</h2>
+    <div id="reply"></div>
+  </main>
+
+  <script src="/static/chat.js"></script>
+</body>
+</html>

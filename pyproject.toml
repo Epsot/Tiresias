@@ -1,0 +1,21 @@
+[project]
+name = "tiresias"
+version = "0.1.0"
+description = "An HTTP bridge between self-hosted Ollama agents and Unreal Engine simulations."
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+license = "Apache License 2.0"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "uvicorn[standard] (>=0.53.0,<0.54.0)",
+    "fastapi (>=0.141.1,<0.142.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "pyyaml (>=6.0.3,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

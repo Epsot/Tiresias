@@ -1,0 +1,73 @@
+:root {
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+textarea,
+input,
+button {
+  font: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea,
+input {
+  background: #1c1c1c;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.6rem;
+}
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+#system-prompt {
+  min-height: 5rem;
+  color: #bbb;
+}
+
+label {
+  display: block;
+  margin: 1rem 0 0.35rem;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  cursor: pointer;
+}
+
+#reply {
+  white-space: pre-wrap;
+  background: #1c1c1c;
+  border: 1px solid #444;
+  padding: 1rem;
+  min-height: 6rem;
+}
+
+.meta {
+  color: #9ad;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #f88;
+}
+
+a {
+  color: #9ad;
+}

@@ -1,0 +1,11 @@
+server:
+  host: 127.0.0.1
+  port: 8000
+
+ollama:
+  host: 127.0.0.1
+  port: 11434
+  model: llama3.2:3b
+  system_prompt: |
+    You are Tiresias, a concise assistant for Unreal Engine simulations.
+    Follow the requested output format exactly. If no format is given, answer in short plain text.
