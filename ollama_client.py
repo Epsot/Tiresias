@@ -1,6 +1,15 @@
 import httpx
 
+from decision_models import (
+    AgentDecision,
+    AgentState,
+    build_decision_schema,
+    validate_decision,
+)
 from settings import settings
+
+REQUEST_TIMEOUT = httpx.Timeout(120.0, connect=5.0)
+MAX_DECISION_ATTEMPTS = 2
 
 
 class OllamaError(Exception):
@@ -33,15 +42,28 @@ async def resolve_model(client: httpx.AsyncClient, requested: str | None) -> str
     return models[0]["name"]
 
 
-async def complete(user_text: str, model: str | None = None) -> tuple[str, str]:
-    """Send one user message to Ollama. Returns (model_name, reply)."""
-    timeout = httpx.Timeout(120.0, connect=5.0)
+async def request_chat(
+    user_text: str,
+    model: str | None = None,
+    response_format: dict[str, object] | None = None,
+    options: dict[str, object] | None = None,
+) -> tuple[str, str]:
+    """Send a chat request and return the selected model and response content."""
     try:
-        async with httpx.AsyncClient(timeout=timeout) as client:
+        async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
             chosen = await resolve_model(client, model)
+            body: dict[str, object] = {
+                "model": chosen,
+                "messages": build_messages(user_text),
+                "stream": False,
+            }
+            if response_format:
+                body["format"] = response_format
+            if options:
+                body["options"] = options
             response = await client.post(
                 f"{settings.ollama.url}/api/chat",
-                json={"model": chosen, "messages": build_messages(user_text), "stream": False},
+                json=body,
             )
     except httpx.ConnectError as exc:
         raise OllamaError(
@@ -60,3 +82,43 @@ async def complete(user_text: str, model: str | None = None) -> tuple[str, str]:
         raise OllamaError(502, f"Unexpected Ollama response: {payload}")
 
     return payload.get("model", chosen), reply
+
+
+async def complete(user_text: str, model: str | None = None) -> tuple[str, str]:
+    """Send one free-form user message to Ollama."""
+    return await request_chat(user_text, model)
+
+
+async def decide(state: AgentState, model: str | None = None) -> tuple[str, AgentDecision]:
+    """Ask Ollama to choose an action for the supplied agent state."""
+    decision_schema = build_decision_schema(state)
+    prompt = (
+        "Choose the best action for this agent from the actions allowed by the provided "
+        "JSON schema. Return only valid JSON. Use wait if no useful action is feasible.\n\n"
+        f"Agent state:\n{state.model_dump_json(indent=2)}"
+    )
+
+    last_error: ValueError | None = None
+    for _ in range(MAX_DECISION_ATTEMPTS):
+        chosen, content = await request_chat(
+            prompt,
+            model,
+            response_format=decision_schema,
+            options={"temperature": 0.5},
+        )
+        try:
+            decision = AgentDecision.model_validate_json(content)
+            validate_decision(decision, state)
+            return chosen, decision
+        except ValueError as exc:
+            last_error = exc
+            prompt += (
+                "\n\nYour previous response was invalid. Correct it using only the allowed "
+                f"schema values. Validation error: {exc}"
+            )
+
+    raise OllamaError(
+        502,
+        f"Ollama failed to return a valid feasible decision after "
+        f"{MAX_DECISION_ATTEMPTS} attempts: {last_error}",
+    )
