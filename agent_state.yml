@@ -3,51 +3,47 @@
 
 example:
   agent_id: agent_01
-  time: 142.5
-  location: village_north
   health: 100
   hunger: 72
-  inventory:
-    food: 1
-    wood: 4
-  known_agents:
-    - id: agent_02
-      location: market
-      relationship: 0.4
-  nearby_objects:
-    - market
-    - forest
-    - well
-  active_goal: none
-  recent_events:
-    - Agent encountered agent_02
-    - Food supply decreased
+  goal: strengthen relationships
+  # Future fields:
+  # time: 142.5
+  # location: village_north
+  # inventory:
+  #   food: 1
+  #   wood: 4
+  # known_agents:
+  #   - id: agent_02
+  #     location: market
+  #     relationship: 0.4
+  # nearby_objects:
+  #   - market
+  #   - forest
+  #   - well
+  # active_goal: none
+  # recent_events:
+  #   - Agent encountered agent_02
+  #   - Food supply decreased
 
 type: object
 required:
   - agent_id
-  - time
-  - location
   - health
   - hunger
-  - inventory
-  - known_agents
-  - nearby_objects
-  - active_goal
-  - recent_events
+  - goal
+  # Future required fields:
+  # - time
+  # - location
+  # - inventory
+  # - known_agents
+  # - nearby_objects
+  # - active_goal
+  # - recent_events
 properties:
   agent_id:
     type: string
     description: Unique identifier of the agent.
     example: agent_01
-  time:
-    type: number
-    description: Simulation time.
-    example: 142.5
-  location:
-    type: string
-    description: Current location of the agent.
-    example: village_north
   health:
     type: integer
     minimum: 0
@@ -58,57 +54,71 @@ properties:
     minimum: 0
     maximum: 100
     example: 72
-  inventory:
-    type: object
-    required:
-      - food
-      - wood
-    properties:
-      food:
-        type: integer
-        minimum: 0
-        example: 1
-      wood:
-        type: integer
-        minimum: 0
-        example: 4
-  known_agents:
-    type: array
-    items:
-      type: object
-      required:
-        - id
-        - location
-        - relationship
-      properties:
-        id:
-          type: string
-          example: agent_02
-        location:
-          type: string
-          example: market
-        relationship:
-          type: number
-          minimum: -1
-          maximum: 1
-          example: 0.4
-  nearby_objects:
-    type: array
-    items:
-      type: string
-    example:
-      - market
-      - forest
-      - well
-  active_goal:
+  goal:
     type: string
-    example: none
-  recent_events:
-    type: array
-    items:
-      type: string
-    example:
-      - Agent encountered agent_02
-      - Food supply decreased
+    description: Current objective that should guide the decision.
+    example: strengthen relationships
+
+  # Future field definitions:
+  # time:
+  #   type: number
+  #   description: Simulation time.
+  #   example: 142.5
+  # location:
+  #   type: string
+  #   description: Current location of the agent.
+  #   example: village_north
+  # inventory:
+  #   type: object
+  #   required:
+  #     - food
+  #     - wood
+  #   properties:
+  #     food:
+  #       type: integer
+  #       minimum: 0
+  #       example: 1
+  #     wood:
+  #       type: integer
+  #       minimum: 0
+  #       example: 4
+  # known_agents:
+  #   type: array
+  #   items:
+  #     type: object
+  #     required:
+  #       - id
+  #       - location
+  #       - relationship
+  #     properties:
+  #       id:
+  #         type: string
+  #         example: agent_02
+  #       location:
+  #         type: string
+  #         example: market
+  #       relationship:
+  #         type: number
+  #         minimum: -1
+  #         maximum: 1
+  #         example: 0.4
+  # nearby_objects:
+  #   type: array
+  #   items:
+  #     type: string
+  #   example:
+  #     - market
+  #     - forest
+  #     - well
+  # active_goal:
+  #   type: string
+  #   example: none
+  # recent_events:
+  #   type: array
+  #   items:
+  #     type: string
+  #   example:
+  #     - Agent encountered agent_02
+  #     - Food supply decreased
 
 

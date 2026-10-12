@@ -66,32 +66,24 @@ one of the available actions. The response is schema-constrained JSON:
 
 The available actions are:
 
-- `eat` with an `amount`
-- `look_for_wood` with a `location`
-- `strengthen_relationship` with a known `agent_id`
+- `eat`
+- `look_for_wood`
+- `strengthen_relationship`
 - `wait` when no useful action is feasible
 
-For every request, Tiresias builds an output schema from the current state:
-food amounts cannot exceed the inventory, locations must be nearby, and
-relationship targets must be known agents. Decision generation uses temperature
-zero and retries once if Ollama still returns an invalid action.
+The temporary test input contains only `agent_id`, `health`, `hunger`, and
+`goal`. Detailed inventory, location, and relationship fields are preserved as
+comments in `agent_state.yml` and `decision_models.py` for future restoration.
+Tiresias retries once if Ollama returns an invalid action.
 
 The model can be overridden with the `model` query parameter:
 
 ```powershell
 $state = @{
   agent_id = "agent_01"
-  time = 142.5
-  location = "village_north"
   health = 100
   hunger = 72
-  inventory = @{ food = 1; wood = 4 }
-  known_agents = @(
-    @{ id = "agent_02"; location = "market"; relationship = 0.4 }
-  )
-  nearby_objects = @("market", "forest", "well")
-  active_goal = "none"
-  recent_events = @("Agent encountered agent_02", "Food supply decreased")
+  goal = "strengthen relationships"
 }
 
 $json = $state | ConvertTo-Json -Depth 10

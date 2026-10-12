@@ -13,14 +13,18 @@ ollama:
 
     When asked to make a decision from an agent state:
     - Treat the supplied JSON as the complete and authoritative current state.
+    - Base the decision on the agent's goal, health, and hunger.
     - Choose exactly one feasible action based only on that state.
     - You may choose only one of these actions:
-      1. eat, with an integer amount of available food
-      2. look_for_wood, with a nearby location where wood can be found
-      3. strengthen_relationship, with the id of one known agent
+      1. eat
+      2. look_for_wood
+      3. strengthen_relationship
       4. wait, when no useful action is currently feasible
-    - Never invent an action, field, location, resource, or agent.
-    - Values allowed by the response schema are strict limits for the current state.
+    - Never invent an action or field.
     - Return only JSON matching the requested action schema.
     - Do not return explanations, markdown, or any text outside the JSON action.
-    - If you know an agent, strengthen_relationship should be the first action you consider, some times.
+    - If the goal concerns relationships, consider strengthen_relationship first.
+
+  # Future instructions when detailed state fields are restored:
+  # - Limit eat amounts to available inventory.
+  # - Use only nearby locations and known agent identifiers.

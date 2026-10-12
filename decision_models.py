@@ -29,15 +29,20 @@ class AgentState(BaseModel):
     )
 
     agent_id: str = Field(description="Unique identifier of the deciding agent.")
-    time: float = Field(description="Current simulation time.")
-    location: str = Field(description="Current agent location.")
     health: int = Field(ge=0, le=100, description="Health from 0 to 100.")
     hunger: int = Field(ge=0, le=100, description="Hunger from 0 to 100.")
-    inventory: Inventory
-    known_agents: list[KnownAgent]
-    nearby_objects: list[str] = Field(description="Objects or places currently nearby.")
-    active_goal: str = Field(description="Current goal, or 'none'.")
-    recent_events: list[str] = Field(description="Recent events relevant to the decision.")
+    goal: str = Field(description="Current objective that should guide the decision.")
+
+    # Future state fields:
+    # time: float = Field(description="Current simulation time.")
+    # location: str = Field(description="Current agent location.")
+    # inventory: Inventory
+    # known_agents: list[KnownAgent]
+    # nearby_objects: list[str] = Field(description="Objects or places currently nearby.")
+    # active_goal: str = Field(description="Current goal, or 'none'.")
+    # recent_events: list[str] = Field(
+    #     description="Recent events relevant to the decision."
+    # )
 
 
 class Action(BaseModel):
@@ -50,17 +55,20 @@ class Action(BaseModel):
 
 class EatAction(Action):
     action: Literal["eat"] = "eat"
-    amount: int = Field(ge=1, description="Number of food units to consume.")
+    # Future parameter, restored with inventory:
+    # amount: int = Field(ge=1, description="Number of food units to consume.")
 
 
 class LookForWoodAction(Action):
     action: Literal["look_for_wood"] = "look_for_wood"
-    location: str = Field(description="Place where the agent should search for wood.")
+    # Future parameter, restored with nearby_objects:
+    # location: str = Field(description="Place where the agent should search for wood.")
 
 
 class StrengthenRelationshipAction(Action):
     action: Literal["strengthen_relationship"] = "strengthen_relationship"
-    agent_id: str = Field(description="Known agent to interact with.")
+    # Future parameter, restored with known_agents:
+    # agent_id: str = Field(description="Known agent to interact with.")
 
 
 class WaitAction(Action):
@@ -81,41 +89,19 @@ class AgentDecision(BaseModel):
     action: PossibleAction
 
 
-def build_decision_schema(state: AgentState) -> dict[str, object]:
-    """Build an Ollama output schema containing only feasible actions."""
-    actions: list[dict[str, object]] = []
+def build_decision_schema(_state: AgentState) -> dict[str, object]:
+    """Build the temporary action-only output schema used for testing."""
+    actions = [
+        _action_schema("eat"),
+        _action_schema("look_for_wood"),
+        _action_schema("strengthen_relationship"),
+        _action_schema("wait"),
+    ]
 
-    if state.inventory.food > 0:
-        actions.append(
-            _action_schema(
-                "eat",
-                amount={
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": state.inventory.food,
-                },
-            )
-        )
-
-    if state.nearby_objects:
-        actions.append(
-            _action_schema(
-                "look_for_wood",
-                location={"type": "string", "enum": state.nearby_objects},
-            )
-        )
-
-    known_agent_ids = [agent.id for agent in state.known_agents]
-    if known_agent_ids:
-        actions.append(
-            _action_schema(
-                "strengthen_relationship",
-                agent_id={"type": "string", "enum": known_agent_ids},
-            )
-        )
-
-    if not actions:
-        actions.append(_action_schema("wait"))
+    # Future state-dependent constraints:
+    # - Enable eat only when inventory.food > 0 and cap its amount.
+    # - Restrict look_for_wood.location to nearby_objects.
+    # - Restrict strengthen_relationship.agent_id to known_agents.
 
     return {
         "type": "object",
@@ -139,16 +125,19 @@ def _action_schema(action: str, **parameters: object) -> dict[str, object]:
 
 
 def validate_decision(decision: AgentDecision, state: AgentState) -> None:
-    """Reject an action that contradicts the state supplied by the client."""
-    action = decision.action
+    """Validate temporary action-only decisions."""
+    _ = decision, state
 
-    if isinstance(action, EatAction) and action.amount > state.inventory.food:
-        raise ValueError("The eat amount exceeds the food in the inventory.")
-
-    if isinstance(action, LookForWoodAction) and action.location not in state.nearby_objects:
-        raise ValueError("The wood-search location is not nearby.")
-
-    if isinstance(action, StrengthenRelationshipAction) and action.agent_id not in {
-        agent.id for agent in state.known_agents
-    }:
-        raise ValueError("The relationship target is not a known agent.")
+    # Future semantic validation:
+    # action = decision.action
+    # if isinstance(action, EatAction) and action.amount > state.inventory.food:
+    #     raise ValueError("The eat amount exceeds the food in the inventory.")
+    # if (
+    #     isinstance(action, LookForWoodAction)
+    #     and action.location not in state.nearby_objects
+    # ):
+    #     raise ValueError("The wood-search location is not nearby.")
+    # if isinstance(action, StrengthenRelationshipAction) and action.agent_id not in {
+    #     agent.id for agent in state.known_agents
+    # }:
+    #     raise ValueError("The relationship target is not a known agent.")
