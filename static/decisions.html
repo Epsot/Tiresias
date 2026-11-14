@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decision conversations · Tiresias</title>
+  <link rel="stylesheet" href="/static/decisions.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">Tiresias</a>
+    <div class="connection" aria-live="polite">
+      <span id="connection-dot" class="connection-dot"></span>
+      <span id="connection-label">Connecting…</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Live decision log</p>
+      <h1>Bot conversations</h1>
+      <p>Requests and responses passing through <code>POST /decision</code>.</p>
+    </section>
+
+    <section id="history" class="history" aria-live="polite" aria-busy="true">
+      <div class="state-card">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Loading conversations…</p>
+      </div>
+    </section>
+  </main>
+
+  <template id="empty-state">
+    <div class="state-card">
+      <div class="empty-icon" aria-hidden="true">{ }</div>
+      <h2>No conversations yet</h2>
+      <p>New decision requests will appear here automatically.</p>
+    </div>
+  </template>
+
+  <script src="/static/decisions.js"></script>
+</body>
+</html>
