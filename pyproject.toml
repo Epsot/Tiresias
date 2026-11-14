@@ -5,6 +5,7 @@ description = "An HTTP bridge between self-hosted Ollama agents and Unreal Engin
 authors = [
     {name = "Your Name",email = "you@example.com"}
 ]
+
 license = "Apache License 2.0"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -15,6 +16,8 @@ dependencies = [
     "pyyaml (>=6.0.3,<7.0.0)"
 ]
 
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

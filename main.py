@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from chat_models import ChatRequest, ChatResponse
+from decision_history import get_history, record_exchange
 from decision_models import AgentDecision, AgentState
 from ollama_client import OllamaError, complete, decide
 from settings import STATIC_DIR, settings
@@ -17,6 +18,11 @@ app = FastAPI(
 @app.get("/", include_in_schema=False)
 def chat_page() -> FileResponse:
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/decisions", include_in_schema=False)
+def decisions_page() -> FileResponse:
+    return FileResponse(STATIC_DIR / "decisions.html")
 
 
 @app.get("/config", tags=["Service"])
@@ -35,6 +41,12 @@ def health_check() -> dict[str, str]:
     return {"status": "healthy"}
 
 
+@app.get("/decision-history", tags=["Agent decisions"])
+def decision_history() -> list[dict[str, object]]:
+    """Return recent decision request/response pairs, newest first."""
+    return get_history()
+
+
 @app.post("/chat", response_model=ChatResponse, tags=["Ollama"])
 async def chat(request: ChatRequest) -> ChatResponse:
     """Send a free-form message to the configured Ollama model."""
@@ -48,10 +60,21 @@ async def chat(request: ChatRequest) -> ChatResponse:
 @app.post("/decision", response_model=AgentDecision, tags=["Agent decisions"])
 async def decision(state: AgentState, model: str | None = None) -> AgentDecision:
     """Choose one feasible action for an agent from its current state."""
+    request_payload = state.model_dump(mode="json")
     try:
         _, result = await decide(state, model)
     except OllamaError as exc:
+        record_exchange(
+            request=request_payload,
+            response={"detail": exc.detail},
+            status_code=exc.status_code,
+        )
         raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+    record_exchange(
+        request=request_payload,
+        response=result.model_dump(mode="json"),
+        status_code=200,
+    )
     return result
 
 

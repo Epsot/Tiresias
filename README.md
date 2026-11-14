@@ -13,7 +13,14 @@ Install the following before running Tiresias:
 Install the Python dependencies and download the default model and run the ollama server:
 
 ```powershell
-poetry install
+poetry config virtualenvs.in-project true
+poetry install 
+```
+
+ctrl + shift + p > Python: Select Interpreter > select the .venv that was just created.
+
+
+```powershell
 ollama pull llama3.2:3b
 ollama run llama3.2:3b
 ```
@@ -30,7 +37,6 @@ ollama:
   model: llama3.2:3b
 ```
 
-```
 
 The Ollama desktop application may already be running this server. If
 `ollama serve` reports that port `11434` is already in use, check the existing
@@ -96,16 +102,28 @@ The input format is also documented in `agent_state.yml`, including field types,
 constraints, descriptions, and the example request displayed by Swagger. Edit
 the top-level `example` in that file to change the request shown in `/docs`.
 
+### Decision conversation viewer
+
+Open `http://127.0.0.1:8000/decisions` to see the requests and responses passing
+through `POST /decision`. The page refreshes automatically and renders nested
+JSON without depending on specific field names or payload shapes.
+
+The most recent 100 exchanges are available as JSON from
+`GET /decision-history`. This history is held in memory and is cleared whenever
+the Tiresias server restarts. Failed Ollama requests are included with their HTTP
+status and error response.
+
 ## Project structure
 
 - `main.py` defines the HTTP routes and starts FastAPI.
+- `decision_history.py` stores the recent in-memory decision exchanges.
 - `settings.py` loads required configuration from the YAML files.
 - `chat_models.py` defines free-form chat request and response models.
 - `decision_models.py` defines agent state, available actions, and validation.
 - `ollama_client.py` contains all communication with Ollama.
 - `config.yml` configures the server, model, and system prompt.
 - `agent_state.yml` documents the decision input and owns its Swagger example.
-- `static/` contains the browser-based chat test page.
+- `static/` contains the browser-based chat and decision conversation pages.
 
 ## Why Tiresias?
 
