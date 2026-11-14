@@ -13,7 +13,11 @@ Install the following before running Tiresias:
 Install the Python dependencies and download the default model and run the ollama server:
 
 ```powershell
-poetry install
+poetry config virtualenvs.in-project true
+poetry install```
+
+ctrl + shift + p > Python: Select Interpreter > select the .venv that was just created.
+```powershell
 ollama pull llama3.2:3b
 ollama run llama3.2:3b
 ```
