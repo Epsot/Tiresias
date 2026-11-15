@@ -1,4 +1,5 @@
 import uvicorn
+import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +9,8 @@ from decision_history import get_history, record_exchange
 from decision_models import AgentDecision, AgentState
 from ollama_client import OllamaError, complete, decide
 from settings import STATIC_DIR, settings
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Tiresias",
@@ -58,7 +61,10 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
 
 @app.post("/decision", response_model=AgentDecision, tags=["Agent decisions"])
-async def decision(state: AgentState, model: str | None = None) -> AgentDecision:
+async def decision(
+    state: AgentState,
+    model: str | None = None,
+) -> AgentDecision:
     """Choose one feasible action for an agent from its current state."""
     request_payload = state.model_dump(mode="json")
     try:
