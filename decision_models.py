@@ -78,6 +78,13 @@ class Action(StrictModel):
     """Base class for every action an agent can take."""
 
     action: str
+    reason: str = Field(
+        min_length=1,
+        description=(
+            "Brief explanation for web display only. "
+            "Does not authorize or execute gameplay actions."
+        ),
+    )
 
 
 class ProposeTradeAction(Action):
@@ -219,12 +226,17 @@ def _action_schema(
     properties: dict[str, object] = {
         "action": {"type": "string", "enum": [action]},
         **parameters,
+        "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Brief explanation for web display only.",
+        },
     }
 
     return {
         "type": "object",
         "properties": properties,
-        "required": list(properties),
+        "required": ["action", *parameters, "reason"],
         "additionalProperties": False,
     }
 
@@ -343,4 +355,8 @@ def parse_and_validate_decision(
             state.agent_id,
             exc,
         )
-        return AgentDecision(action=WaitAction())
+        return AgentDecision(
+            action=WaitAction(
+                reason="No valid decision was produced; waiting safely."
+            )
+        )
