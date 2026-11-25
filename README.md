@@ -113,6 +113,10 @@ The most recent 100 exchanges are available as JSON from
 the Tiresias server restarts. Failed Ollama requests are included with their HTTP
 status and error response.
 
+Validated `respond_to_trade` decisions are also saved to `trade_memory.jsonl`.
+Each offer/responder pair is recorded once, and up to 10 recent decisions for the
+requesting NPC are included in future prompts as advisory context.
+
 ## Project structure
 
 - `main.py` defines the HTTP routes and starts FastAPI.

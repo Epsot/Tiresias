@@ -145,6 +145,15 @@ def build_decision_schema(state: AgentState) -> dict[str, object]:
     """
     actions = [_action_schema("wait")]
 
+    incoming_offer_ids = sorted(
+        {
+            offer.offer_id
+            for offer in state.pending_offers
+            if offer.recipient_id == state.agent_id
+            and offer.initiator_id != state.agent_id
+        }
+    )
+
     offered_ids = sorted(
         {
             item.item_id
@@ -160,7 +169,7 @@ def build_decision_schema(state: AgentState) -> dict[str, object]:
         and any(item.quantity > 0 for item in agent.inventory)
     ]
 
-    if offered_ids and partners:
+    if offered_ids and partners and not incoming_offer_ids:
         requested_ids = sorted(
             {
                 item.item_id
@@ -189,15 +198,6 @@ def build_decision_schema(state: AgentState) -> dict[str, object]:
                 requested_quantity={"type": "integer", "minimum": 1},
             )
         )
-
-    incoming_offer_ids = sorted(
-        {
-            offer.offer_id
-            for offer in state.pending_offers
-            if offer.recipient_id == state.agent_id
-            and offer.initiator_id != state.agent_id
-        }
-    )
 
     if incoming_offer_ids:
         actions.append(
@@ -255,6 +255,16 @@ def validate_decision(
         return
 
     if isinstance(action, ProposeTradeAction):
+        if any(
+            offer.recipient_id == state.agent_id
+            and offer.initiator_id != state.agent_id
+            for offer in state.pending_offers
+        ):
+            raise ValueError(
+                "Respond to the active incoming offer or wait; "
+                "do not propose a new trade."
+            )
+            
         if action.partner_id == state.agent_id:
             raise ValueError("An agent cannot trade with itself.")
 
