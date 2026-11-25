@@ -115,10 +115,16 @@ async def decide(state: AgentState, model: str | None = None) -> tuple[str, Agen
         for offer in state.pending_offers
     ):
         prompt += (
-            "\n\nAn incoming trade is awaiting your decision. "
-            "Evaluate that existing offer independently. "
-            "offered_item_id/offered_quantity are goods you receive; "
-            "requested_item_id/requested_quantity are goods you give. "
+            "\n\nIncoming offers:\n"
+            "- The initiator offers you the offered item and quantity in exchange "
+            "for your requested item and quantity.\n"
+            "- Decide independently whether the trade suits your current needs, "
+            "inventory, goals, and relevant memories.\n"
+            "- Write a brief, natural in-character reason, as if speaking to the "
+            "other trader. You do not need to repeat the items or quantities.\n"
+            "- If you mention the goods, accurately distinguish what you would "
+            "receive from what you would give. Do not invent extra goods.\n"
+            "- Past dealings may influence your decision but do not dictate it.\n"
             "Use respond_to_trade with the exact offer_id and a JSON "
             "boolean accept: true to accept, false to reject. "
             "Do not propose a replacement trade. "
