@@ -1,4 +1,0 @@
-{"offer_id":"offer_1","responder_id":"NPC_C","initiator_id":"NPC_A","offered_item_id":"Batteries","offered_quantity":1,"requested_item_id":"BottledWater","requested_quantity":1,"accepted":false,"timestamp":"2026-11-25T02:36:24.179039+00:00"}
-{"offer_id":"offer_2","responder_id":"NPC_C","initiator_id":"NPC_B","offered_item_id":"Soap","offered_quantity":1,"requested_item_id":"DuctTape","requested_quantity":1,"accepted":false,"timestamp":"2026-11-25T02:36:40.326359+00:00"}
-{"offer_id":"offer_3","responder_id":"NPC_C","initiator_id":"NPC_A","offered_item_id":"Batteries","offered_quantity":1,"requested_item_id":"BottledWater","requested_quantity":1,"accepted":false,"timestamp":"2026-11-25T02:36:59.670237+00:00"}
-{"offer_id":"offer_4","responder_id":"NPC_C","initiator_id":"NPC_A","offered_item_id":"Batteries","offered_quantity":1,"requested_item_id":"BottledWater","requested_quantity":1,"accepted":true,"timestamp":"2026-11-25T02:37:11.338146+00:00"}
