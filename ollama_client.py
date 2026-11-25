@@ -1,3 +1,5 @@
+import json
+
 import httpx
 
 from decision_models import (
@@ -7,6 +9,7 @@ from decision_models import (
     validate_decision,
 )
 from settings import settings
+from trade_memory import get_recent_trade_decisions
 
 REQUEST_TIMEOUT = httpx.Timeout(120.0, connect=5.0)
 MAX_DECISION_ATTEMPTS = 2
@@ -97,6 +100,31 @@ async def decide(state: AgentState, model: str | None = None) -> tuple[str, Agen
         "JSON schema. Return only valid JSON. Use wait if no useful action is feasible.\n\n"
         f"Agent state:\n{state.model_dump_json(indent=2)}"
     )
+
+    trade_history = get_recent_trade_decisions(state.agent_id)
+    if trade_history:
+        prompt += (
+            "\n\nRecent trade-response history for this NPC (advisory context only; "
+            "the current state and offer are authoritative):\n"
+            f"{json.dumps(trade_history, indent=2)}"
+        )
+    
+    if any(
+        offer.recipient_id == state.agent_id
+        and offer.initiator_id != state.agent_id
+        for offer in state.pending_offers
+    ):
+        prompt += (
+            "\n\nAn incoming trade is awaiting your decision. "
+            "Evaluate that existing offer independently. "
+            "offered_item_id/offered_quantity are goods you receive; "
+            "requested_item_id/requested_quantity are goods you give. "
+            "Use respond_to_trade with the exact offer_id and a JSON "
+            "boolean accept: true to accept, false to reject. "
+            "Do not propose a replacement trade. "
+            "Use wait only if you cannot make a valid decision. "
+            "Your reason is display-only; Unreal executes the trade."
+        )
 
     last_error: ValueError | None = None
     for _ in range(MAX_DECISION_ATTEMPTS):

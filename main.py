@@ -9,6 +9,7 @@ from decision_history import get_history, record_exchange
 from decision_models import AgentDecision, AgentState
 from ollama_client import OllamaError, complete, decide
 from settings import STATIC_DIR, settings
+from trade_memory import record_validated_trade_decision
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,14 @@ async def decision(
             status_code=exc.status_code,
         )
         raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
+    try:
+        record_validated_trade_decision(state, result)
+    except OSError as exc:
+        logger.exception("Could not save trade decision memory")
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save trade decision memory.",
+        ) from exc
     record_exchange(
         request=request_payload,
         response=result.model_dump(mode="json"),

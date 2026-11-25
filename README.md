@@ -117,6 +117,7 @@ status and error response.
 
 - `main.py` defines the HTTP routes and starts FastAPI.
 - `decision_history.py` stores the recent in-memory decision exchanges.
+- `trade_memory.py` stores validated trade responses in JSONL format.
 - `settings.py` loads required configuration from the YAML files.
 - `chat_models.py` defines free-form chat request and response models.
 - `decision_models.py` defines agent state, available actions, and validation.
