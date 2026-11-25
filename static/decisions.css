@@ -1,10 +1,10 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: #090d16;
-  color: #e8ecf4;
+  background: #f5f7fb;
+  color: #202938;
   font-synthesis: none;
 }
 
@@ -16,9 +16,8 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 15% -10%, rgb(72 91 175 / 22%), transparent 32rem),
-    radial-gradient(circle at 100% 20%, rgb(38 146 132 / 12%), transparent 30rem),
-    #090d16;
+    radial-gradient(circle at 50% 0, rgb(221 232 255 / 55%), transparent 34rem),
+    #f5f7fb;
 }
 
 .site-header {
@@ -28,18 +27,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 4rem;
-  padding: 0 2rem;
-  border-bottom: 1px solid rgb(255 255 255 / 8%);
-  background: rgb(9 13 22 / 82%);
-  backdrop-filter: blur(16px);
+  min-height: 3.75rem;
+  padding: 0 max(1.25rem, calc((100% - 860px) / 2));
+  border-bottom: 1px solid #e6eaf1;
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(12px);
 }
 
 .brand {
-  color: #f5f7ff;
-  font-size: 1.05rem;
+  color: #263248;
+  font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   text-decoration: none;
 }
 
@@ -47,7 +46,7 @@ body {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  color: #aeb8ca;
+  color: #697589;
   font-size: 0.82rem;
 }
 
@@ -55,213 +54,233 @@ body {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background: #45d6a8;
-  box-shadow: 0 0 0.75rem rgb(69 214 168 / 75%);
+  background: #22a879;
 }
 
 .connection-dot.offline {
-  background: #f17878;
-  box-shadow: 0 0 0.75rem rgb(241 120 120 / 60%);
+  background: #dc5360;
 }
 
 main {
-  width: min(1120px, calc(100% - 2rem));
+  width: min(860px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 4.5rem 0 6rem;
+  padding: 3.25rem 0 5rem;
 }
 
 .intro {
-  max-width: 680px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .eyebrow {
-  margin: 0 0 0.75rem;
-  color: #7e9cff;
-  font-size: 0.76rem;
+  margin: 0 0 0.55rem;
+  color: #6479ad;
+  font-size: 0.72rem;
   font-weight: 750;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 0;
-  color: #f7f8fc;
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  color: #202938;
+  font-size: clamp(1.9rem, 5vw, 2.65rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
 }
 
 .intro > p:last-child {
-  margin: 1rem 0 0;
-  color: #9da8bb;
-  font-size: 1.05rem;
-  line-height: 1.6;
+  margin: 0.7rem 0 0;
+  color: #68758a;
+  font-size: 0.98rem;
+  line-height: 1.55;
 }
 
 code {
-  padding: 0.18rem 0.38rem;
-  border: 1px solid rgb(126 156 255 / 22%);
+  padding: 0.12rem 0.35rem;
+  border: 1px solid #dfe6f3;
   border-radius: 0.35rem;
-  background: rgb(126 156 255 / 10%);
-  color: #bdcaff;
+  background: #edf2fb;
+  color: #475d8d;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.88em;
 }
 
 .history {
   display: grid;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .exchange {
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 9%);
+  border: 1px solid #e3e8f0;
   border-radius: 1rem;
-  background: rgb(17 23 37 / 82%);
-  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 18%);
+  background: #fff;
+  box-shadow: 0 0.4rem 1.5rem rgb(42 56 82 / 5%);
 }
 
 .exchange-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  min-height: 3.2rem;
+  padding: 0.7rem 1.1rem;
+  border-bottom: 1px solid #edf0f5;
+  background: #fff;
 }
 
 .exchange-header h2 {
   margin: 0;
-  font-size: 0.92rem;
+  color: #5e6a7d;
+  font-size: 0.8rem;
   font-weight: 650;
 }
 
 .exchange-meta {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.7rem;
   align-items: center;
-  color: #8793a7;
-  font-size: 0.75rem;
+  color: #8a94a5;
+  font-size: 0.72rem;
 }
 
 .status {
-  min-width: 2.7rem;
-  padding: 0.2rem 0.5rem;
+  min-width: 2.5rem;
+  padding: 0.18rem 0.45rem;
   border-radius: 999px;
   text-align: center;
   font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.68rem;
   font-weight: 700;
 }
 
 .status-success {
-  background: rgb(69 214 168 / 13%);
-  color: #68e4bd;
+  background: #e7f6ef;
+  color: #21865e;
 }
 
 .status-error {
-  background: rgb(241 120 120 / 13%);
-  color: #ff9292;
+  background: #fff0ef;
+  color: #c4474e;
 }
 
 .messages {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.15rem;
 }
 
 .message {
-  min-width: 0;
-  padding: 1.25rem;
+  width: fit-content;
+  max-width: min(92%, 43rem);
+  min-width: min(55%, 20rem);
+  padding: 0.8rem 1rem 0.9rem;
+  border: 1px solid #e7ebf2;
+  border-radius: 0.95rem;
 }
 
-.message + .message {
-  border-left: 1px solid rgb(255 255 255 / 8%);
+.message-request {
+  align-self: flex-start;
+  border-top-left-radius: 0.3rem;
+  background: #f3f5f8;
+}
+
+.message-response {
+  align-self: flex-end;
+  border-color: #dce7fa;
+  border-top-right-radius: 0.3rem;
+  background: #edf4ff;
+}
+
+.exchange-error .message-response {
+  border-color: #f4dddd;
+  background: #fff4f3;
 }
 
 .message h3 {
-  margin: 0 0 1rem;
-  font-size: 0.7rem;
+  margin: 0 0 0.65rem;
+  color: #788396;
+  font-size: 0.65rem;
   font-weight: 750;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.message-request h3 {
-  color: #90a8ff;
-}
-
 .message-response h3 {
-  color: #66d9b7;
+  color: #5876ad;
 }
 
 .exchange-error .message-response h3 {
-  color: #ff9292;
+  color: #bd5557;
 }
 
 .payload {
   overflow-x: auto;
+  color: #344052;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   line-height: 1.55;
 }
 
 .json-object,
 .json-array {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.3rem;
   min-width: max-content;
 }
 
 .json-row {
   display: grid;
   grid-template-columns: minmax(5rem, auto) 1fr;
-  gap: 0.8rem;
+  gap: 0.75rem;
   align-items: start;
 }
 
 .json-child > .json-object,
 .json-child > .json-array {
-  padding-left: 0.85rem;
-  border-left: 1px solid rgb(126 156 255 / 20%);
+  padding-left: 0.75rem;
+  border-left: 1px solid #d5deed;
 }
 
 .json-key {
-  color: #8491a6;
+  color: #778398;
   overflow-wrap: anywhere;
 }
 
 .json-string {
-  color: #badc8f;
+  color: #39764c;
 }
 
 .json-number {
-  color: #efbd78;
+  color: #a3631f;
 }
 
 .json-boolean {
-  color: #bba5f7;
+  color: #7653a7;
 }
 
 .json-null,
 .json-empty {
-  color: #6f7a8c;
+  color: #8791a0;
   font-style: italic;
 }
 
 .state-card {
   display: grid;
   justify-items: center;
-  min-height: 18rem;
-  padding: 4rem 1.5rem;
-  border: 1px dashed rgb(255 255 255 / 14%);
+  min-height: 15rem;
+  padding: 3.5rem 1.5rem;
+  border: 1px dashed #d7deea;
   border-radius: 1rem;
-  color: #8f9aab;
+  background: rgb(255 255 255 / 70%);
+  color: #778398;
   text-align: center;
 }
 
 .state-card h2 {
   margin: 1rem 0 0.4rem;
-  color: #d9deea;
-  font-size: 1.1rem;
+  color: #344052;
+  font-size: 1.05rem;
 }
 
 .state-card p {
@@ -270,12 +289,12 @@ code {
 }
 
 .state-error h2 {
-  color: #ff9292;
+  color: #bd5557;
 }
 
 .empty-icon {
   align-self: end;
-  color: #6477b9;
+  color: #788bb6;
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: 2rem;
 }
@@ -284,8 +303,8 @@ code {
   align-self: end;
   width: 1.5rem;
   height: 1.5rem;
-  border: 2px solid rgb(126 156 255 / 20%);
-  border-top-color: #7e9cff;
+  border: 2px solid #dce5f5;
+  border-top-color: #6684bf;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -296,31 +315,33 @@ code {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 600px) {
   .site-header {
     padding: 0 1rem;
   }
 
   main {
-    padding-top: 3rem;
+    padding-top: 2.5rem;
   }
 
   .messages {
-    grid-template-columns: 1fr;
+    padding: 0.85rem;
   }
 
-  .message + .message {
-    border-top: 1px solid rgb(255 255 255 / 8%);
-    border-left: 0;
+  .message {
+    max-width: 100%;
+    min-width: 0;
   }
 
   .exchange-header {
     align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .exchange-meta {
     flex-direction: column-reverse;
     align-items: flex-end;
+    gap: 0.25rem;
   }
 }
 
